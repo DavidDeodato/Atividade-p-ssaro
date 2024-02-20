@@ -1,0 +1,109 @@
+// Arquivo "index.html"
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <title>Exercício do Pássaro</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;  }
+    </style>
+</head>
+<body>
+
+<script>
+
+    // estabelecendo as configurações do jogo
+
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+
+
+//estabelecendo as funções das configurações
+    scene: {
+        preload: precarregamento,
+        create: criacao,
+        update: upando
+    }
+};
+
+//estabelecendo que o jogo usará a configuração definida acima
+var game = new Phaser.Game(config);
+
+//estabelecendo a variável da Sprite passarinho
+var passarinho;
+
+//fazendo pré-carregamento das imagens na página
+function precarregamento() {
+    this.load.image('fundo', 'assets/bg_space.png');
+    this.load.spritesheet('passaro', "assets/bird-purple.png", { frameWidth: 75, frameHeight: 75})
+}
+//adicionando as imagens na tela
+function criacao() {
+    this.add.image(400, 300, 'fundo').setScale(1.2);
+    passarinho = this.add.sprite(100,300, 'passaro').setScale(1.3);
+
+    //estabelecendo a animação do SpriteSheet
+     this.anims.create({
+        key: "fly",
+        frames:this.anims.generateFrameNumbers("passaro", {start: 0, end: 7}),
+        frameRate: 10,
+        repeat: -1
+
+
+
+     });
+//fazendo animação ter valor verdadeiro para começar
+     passarinho.anims.play("fly", true);
+}
+//estabelecendo a função upando(update) e estabelecendo as condições para ele ir e voltar
+function upando() { 
+
+    //estabelecendo as condições para o passarinho conseguir ir e voltar 
+    //estabelecendo se, o passaro estiver na coordenada 100 do eixo X, ativar a variável de ida e virar o passarinho para direita
+    if(passarinho.x == 100){passarinho.ida = true; passarinho.setFlip(false,false)
+    }
+
+//estabelecendo se, o passarinho estiver em uma coordenada menor que 700 no eixo X e com a variável passarinho.ida ativa, adicionar + 5 na coordenada horizontal
+    if(passarinho.x < 700 && passarinho.ida == true) { console.log("Agora o passaro, se estiver abaixo de 700 no eixo x e a ida tiver ativado, ele vai andar para frente, ou seja, ir para a direita"), passarinho.x += 5;
+    }
+
+    //estabelecendo se, o passinho estiver na coordenada 700 do eixo X, desativar a variável ida e virar o passaro para esquerda
+    if(passarinho.x == 700){passarinho.ida = false; passarinho.setFlip(true,false)
+    }
+
+//estabelecendo se, o passsarinho estiver em uma coordenada maior que 100 no eixo X e a variável ida ativada, subtrair 5 da coordenada X do passarinho
+    if(passarinho.x > 100 && passarinho.ida == false){console.log("Aqui, se o passarinho tiver com um valor maior que 100 no eixo X e tiver com a ida desativada, ele irá começar a ir para a trás, ou seja, ele ira começar ir para esquerda"), passarinho.x -= 5;
+}
+
+    
+    // estabelecendo a movimentação vertical
+
+    //estabelecendo se, o passarinho estiver na coordenada 300 do eixo Y, terá a variável subida como verdadeira
+    if(passarinho.y == 300){passarinho.subida = true}
+
+    //estabelecendo se, o passarinho tiver em alguma coordenada menor que 500 no eixo Y e a variável subida como verdadeira, some mais 5 na coordenada Y dele
+    if(passarinho.y < 500 && passarinho.subida == true){passarinho.y += 5}
+
+    //estabelecendo se, o passarinho estiver na coordenada 500 do eixo Y, terá a variável subida como falsa
+    if(passarinho.y == 500){passarinho.subida = false}
+
+    //estabelecendo se, o passarinho estiver em alguma coordenada maior que 300 no eixo Y e estiver a variável subida como falsa, subtraia 5 na coordenada Y dele
+     if(passarinho.y > 300 && passarinho.subida == false){passarinho.y -= 5}
+    
+  
+}
+
+</script>
+
+</body>
+</html>
